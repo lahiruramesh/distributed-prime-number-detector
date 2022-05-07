@@ -1,0 +1,29 @@
+{
+  "name": "bully-algorithm",
+  "version": "1.0.0",
+  "description": "Distributed election algorithm in Node/Express",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "debug": "nodemon src/index.js",
+    "test": "node src/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emagdne/bully-algorithm.git"
+  },
+  "author": "Jordan Brown",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/emagdne/bully-algorithm/issues"
+  },
+  "homepage": "https://github.com/emagdne/bully-algorithm#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "consul": "^0.40.0",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
