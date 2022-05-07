@@ -1,3 +1,4 @@
+const { default: Axios } = require('axios');
 const Consul = require('consul');
 
 class ConsulConfig {
@@ -30,6 +31,18 @@ class ConsulConfig {
             console.log( serviceName + ': registered successfully!');
         })
     }
+
+    updateNodeInfo = (serviceName, data) => {
+        const node = await this.getConfig('develop/service');
+        node['Meta'] = data;
+        return this.consul.kv.set('develop/service', JSON.stringify(data))
+    }
+
+    getActiveNodes = () => {
+        return Axios.get('http://127.0.0.1:8500/v1/agent/services');
+    }
+
+
 }
 
 module.exports = ConsulConfig;

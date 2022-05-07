@@ -14,10 +14,6 @@ let isAwaitingNewCoordinator = false;
 
     registerEndpoints(app, nodes, logger);
     setInterval(() => pingCoordinator(nodes, logger), 5000);
-
-    app.get('/health', (req, res) => {
-        res.end('OK!');
-    });
     
     app.listen(thisNode.host.port, () => logger.log('Up and listening'));
     startElection(nodes, logger);
@@ -45,9 +41,6 @@ function getNodes(args) {
 }
 
 function registerEndpoints(app, nodes, logger) {
-
-
-
     app.get('/alive', (req, res) => res.sendStatus(200));
 
     app.get('/election', (req, res) => {

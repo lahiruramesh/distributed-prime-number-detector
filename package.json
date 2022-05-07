@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/emagdne/bully-algorithm#readme",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "consul": "^0.40.0",
     "express": "^4.16.4"
   },

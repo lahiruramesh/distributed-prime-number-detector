@@ -1,10 +1,17 @@
 const http = require('http');
 const ConsulConfig = require('./consul');
-
+const {generateUniqueID} = require('./util');
 
 const port = process.argv[2] || 3003;
 
-const consul = new ConsulConfig(`200-${port}`, port);
+const nodeId = generateUniqueID();
+
+const consul = new ConsulConfig(nodeId, port);
+
+console.log(generateUniqueID());
+
+
+
 
 http.createServer( (req, res) => {
 

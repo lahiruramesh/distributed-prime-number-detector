@@ -20,3 +20,5 @@ const findPrime  = (start, end, number) => {
 module.exports = {
     findPrime
 }
+
+
