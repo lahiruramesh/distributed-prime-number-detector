@@ -7,7 +7,7 @@ const acceptMessage = () => {
 
     for(node in nodes) {
         if(len(nodes[node]['Meta']) > 0) {
-            if(nodes[node]['Meta']['Role'] === 'Learner') {
+            if(nodes[node]['Meta']['Role'] === 'Proposers') {
                 let node = nodes[each]['Service'],
                 role = nodes[each]['Port'];
                 let key = node;

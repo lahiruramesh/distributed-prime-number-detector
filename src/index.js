@@ -85,6 +85,7 @@ async function startElection(nodes, logger) {
                 })
             ).catch(() => {});
             
+            
             break;
         } else {
 

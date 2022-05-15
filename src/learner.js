@@ -1,13 +1,15 @@
-const countMessage = (req, res) => {
+let isPrimeCount, isNotPrimeCount = 0;
 
+
+const countMessage = (req, res) => { 
+       
 }
 
 
-const decidePrimeOrNot = (evenPrimeCount, totalCount) => {
-
+const learn = (evenPrimeCount, totalCount) => {
 }
 
 module.exports = {
     countMessage,
-    decidePrimeOrNot
+    learn
 }

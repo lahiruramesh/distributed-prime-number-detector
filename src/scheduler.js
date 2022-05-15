@@ -1,12 +1,15 @@
 const { range } = require('express/lib/request');
-const {readNumberFromFile} = require('./master');
+const {readNumberFromFile} = require('./util');
 const axios = require('axios');
+const {checkMyRole} = require('./authorization');
 
 const scheduleJobs = async (combined) => {
+
+    checkMyRole(this, 'master');
     let count = 0, proposal_arr = [];
 
     combined.forEach(node => {
-        if(node == 'Proposer') {
+        if(node['Meta']['Role'] == 'Proposer') {
             proposal_arr.append(node)
             count++;
             console.log('range_array', proposal_arr);
@@ -30,15 +33,20 @@ const scheduleJobs = async (combined) => {
 
        console.log(divide_range);
 
-       let url = 'http://127.0.0,1:%s/proposer-schedule' % proposal_arr[node]
+       let url = 'http://127.0.0.1:%s/proposer-schedule' % proposal_arr[node]
        
        await axios.post(url, divide_range);
 
        start += random_number + 1;
-
     }
-
 }
+
+
+let learningIDs = [];
+
+
+
+
 
 module.exports = {
     scheduleJobs

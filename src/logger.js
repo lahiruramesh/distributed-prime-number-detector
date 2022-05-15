@@ -6,7 +6,7 @@ class Logger {
     }
 
     log(message) {
-        console.log(`${this.host.href} -- ${message}`);
+        //console.log(`${this.host.href} -- ${message}`);
     }
 }
 

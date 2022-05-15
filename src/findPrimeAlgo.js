@@ -1,4 +1,4 @@
-const findPrime  = (start, end, number) => {
+const findPrime  = async(start, end, number) => {
 
     if(start === 0) return "not allowed to divide by zero";
 

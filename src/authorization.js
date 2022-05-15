@@ -1,14 +1,13 @@
 const { default: Axios } = require("axios");
-const { range } = require("express/lib/request");
 const {ConsulConfig} = require('./consul');
 const {removeMasterNode} = require('./util');
 
-const assigRole = (nodes) => {
+const assignedRoles = (nodes) => {
    
     let roles = [];
 
-    let activeNodes = ConsulConfig.getActiveNodes();
-    let activeNodesWithouMaster = removeMasterNode(activeNodes);
+    let activeNodesWithouMaster = removeMasterNode(nodes);
+    
 
     for(key in roles) {
         combined = {key: (roles[key], ports_array[key])}
@@ -18,7 +17,7 @@ const assigRole = (nodes) => {
     let data_learner = {"role": "learner"};
     let data_proposer = {"role": "proposer"};
 
-    for(i in range(2, nodes)) {
+    for(i in range(2, activeNodesWithouMaster)) {
        let role = 'Acceptor';
        let key = nodes[i];
        let value = role;
@@ -26,7 +25,7 @@ const assigRole = (nodes) => {
 
     }
 
-    for(i in range(3, nodes)) {
+    for(i in range(3, activeNodesWithouMaster)) {
 
        let role = 'Learner';
        let key = nodes[i];
@@ -46,15 +45,23 @@ const assigRole = (nodes) => {
         }else {
             let url = 'http://localhost:%s/proposer' % combined[node][1]
     
-            requests.post(url, data_proposer)
+            Axios.post(url, data_proposer)
         }
 
     }
-    return combined;
+
+
+    return nodes;
+}
+
+
+const checkMyRole = (node, role) => {
+    if(node['Meta']['Role'] == role) return true;
+    return false;
 }
 
 
 
 module.exports = {
-    assigRole
+    assignedRoles
 }

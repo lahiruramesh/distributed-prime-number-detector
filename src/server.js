@@ -1,44 +1,57 @@
-const http = require('http');
+const express = require('express')
+const app = express()
 const ConsulConfig = require('./consul');
+const {generateUniqueID} = require('./util');
+const {electLeader, bullyApp} = require('./bullyAlogrithm');
 
+let activeAllNodes = [];
 
 const port = process.argv[2] || 3000;
 
-const consul = new ConsulConfig(`200-${port}`, port);
+const consul = new ConsulConfig();
+let existNode = null;
+let uuid = null;
 
-http.createServer( (req, res) => {
+(async () => {
+    let nodeExists = false;
+    
+    const allActiveNodes = await consul.getAllNodes();
+    for(node in allActiveNodes.data) {
 
-    const {url, method} = req;
-    //Test health check
-    if (url === '/health') {
-        res.end('OK!');
+        activeAllNodes.push(allActiveNodes.data[node]);
         
+        // Check node available in same port
+        if(allActiveNodes.data[node]['Port'] == port) {
+            existNode = allActiveNodes.data[node]['ID'];
+            nodeExists = true; break;
+        }
     }
 
-    if(url === '/findPrime') {
-
-
+    if(!nodeExists) {
+        uuid = generateUniqueID();
+        consul.registerService(uuid.toString(), port);
+    }else{
+        uuid = existNode;
+        console.log(`This node ${existNode} is already available on ${port}`);   
     }
-
-    if(url === '/learner') {
-
+    if(uuid) {
+        await init(uuid,activeAllNodes);
     }
-
-    if(url === '/validate') {
-
-    }
-
-    if(url === '/accept') {
-
-    }
+   
+})();
 
 
-    if(url === '/asignRole') {
+async function init(uuid,activeAllNodes) {
+    console.log('sss', uuid);
+    await electLeader(uuid,activeAllNodes);
+}
 
-    }
+app.get('/health', (req ,res) => res.send('OK'));
 
+app.get('/', (req ,res) => res.send(`node: ${uuid}`));
 
+app.use(bullyApp);
 
-}).listen(port, () => {
-    console.log(`server listening:`, port);
-});
+app.listen(port, () => {
+    console.log(`Server listening`, port);
+})
